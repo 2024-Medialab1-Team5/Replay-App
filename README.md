@@ -10,3 +10,16 @@
 - [Expo GL docs](https://docs.expo.dev/versions/latest/sdk/gl-view/)
 - [Three.js docs](https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene)
 - [React Native Paper docs](https://callstack.github.io/react-native-paper/docs/components/Button)
+
+## Code Conventions
+
+Formatting using `typescript-language-server` (Built-into VSCode.)
+
+All global state must be documented in the README.
+
+## Code Documentation
+
+### Global State
+
+*App.tsx*
+- `playing` if true, rotates the cube. (checked in `update()`)

@@ -1,29 +1,23 @@
 import { GLView } from "expo-gl";
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Renderer, TextureLoader } from "expo-three";
 import { useEffect } from "react";
 import {
   AmbientLight,
   BoxBufferGeometry,
-  Fog,
-  GridHelper,
   Mesh,
   MeshStandardMaterial,
   PerspectiveCamera,
-  PointLight,
   Scene,
-  SpotLight,
 } from "three";
 import { Title, Button } from 'react-native-paper';
 
 let playing = true;
 
 export default function App() {
-  let timeout;
-
   useEffect(() => {
     // Clear the animation loop when the component unmounts
-    return () => clearTimeout(timeout);
+  return () => clearTimeout(timeout);
   }, []);
 
   const onContextCreate = async (gl) => {
@@ -65,12 +59,12 @@ export default function App() {
     render();
   };
 
-  return ( 
+  return (
     <View style={styles.container}>
       <GLView style={{ width: 300, height: 300 }} onContextCreate={onContextCreate} />
       <Title>Replay app</Title>
-      <Button mode="elevated" icon="play" onPress={() => {playing = true;}}>Play</Button>
-      <Button mode="contained" icon="pause" onPress={() => {playing = false;}}>Pause</Button>
+      <Button mode="elevated" icon="play" onPress={() => { playing = true; }}>Play</Button>
+      <Button mode="contained" icon="pause" onPress={() => { playing = false; }}>Pause</Button>
     </View>
   );
 }
