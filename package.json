@@ -12,7 +12,8 @@
     "react-native": "0.73.2",
     "react-native-paper": "^5.12.3",
     "react-native-web": "~0.19.6",
-    "three": "^0.145.0"
+    "three": "^0.145.0",
+    "react-native-reanimated": "~3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
