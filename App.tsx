@@ -11,6 +11,7 @@ import {
   Scene,
 } from "three";
 import { Title, Button } from 'react-native-paper';
+import { parseFile } from "./parseMocap";
 
 let playing = true;
 
@@ -19,6 +20,7 @@ export default function App() {
     // Clear the animation loop when the component unmounts
   return () => clearTimeout(timeout);
   }, []);
+  parseFile("assets/dataset-1_walk_old_001.bvh")
 
   const onContextCreate = async (gl) => {
     const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
