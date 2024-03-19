@@ -5,21 +5,21 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 
 const BOTTOM_APPBAR_HEIGHT = 80;
 
-const App = () => {
-    const { bottom } = useSafeAreaInsets();
-    const theme = useTheme();
+export default function App() {
+  const { bottom } = useSafeAreaInsets();
+  const theme = useTheme();
 
   return (
-    // <SafeAreaProvider>
-        <View style={styles.container}>
-            {/* <Title>Replay app UI</Title> */}
-            <Appbar.Header>
-                <Appbar.BackAction onPress={() => {}} />
-                <Appbar.Content title="Lucas van der Vegt (2024-03-11)" subtitle="2024-03-11, 13:45-15:23"/>
-                {/* <Appbar.Action icon="calendar" onPress={() => {}} /> */}
-                {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
-            </Appbar.Header>
-            <Appbar
+      <SafeAreaProvider>
+          <View style={styles.container}>
+              {/* <Title>Replay app UI</Title> */}
+              <Appbar.Header>
+                  <Appbar.BackAction onPress={() => {}} />
+                  <Appbar.Content title="Lucas van der Vegt (2024-03-11)" subtitle="2024-03-11, 13:45-15:23"/>
+                  {/* <Appbar.Action icon="calendar" onPress={() => {}} /> */}
+                  {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
+              </Appbar.Header>
+              {/* <Appbar
                 style={[
                   styles.bottom,
                   {
@@ -33,10 +33,10 @@ const App = () => {
                 <Appbar.Action icon="email" onPress={() => {}} />
                 <Appbar.Action icon="label" onPress={() => {}} />
                 <Appbar.Action icon="delete" onPress={() => {}} />
-              </Appbar>
-        </View>
-    // </SafeAreaProvider>
-  );
+              </Appbar> */}
+          </View>
+      </SafeAreaProvider>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -47,12 +47,10 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
     },
     bottom: {
-        backgroundColor: 'aquamarine',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
+      backgroundColor: 'aquamarine',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
     },
 });
-
-export default App;
