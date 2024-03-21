@@ -15,6 +15,7 @@ export class SkeletonNode {
 	parent: SkeletonNode | null;
 	name: string;
 	joints: Array<SkeletonNode> = [];
+	offset: { x: number; y: number; z: number } | null = null;
 
 	constructor(parent: SkeletonNode | null, name = "") {
 		this.parent = parent;
@@ -40,10 +41,17 @@ function addChildren(
 				return [i, parent];
 			}
 			case "JOINT": {
-				console.log(line[1]);
 				let node: SkeletonNode;
 				[i, node] = addChildren(data, new SkeletonNode(parent, line[1]), i + 1);
 				parent.joints.push(node);
+				break;
+			}
+			case "OFFSET": {
+				parent.offset = {
+					x: parseFloat(line[1]),
+					y: parseFloat(line[2]),
+					z: parseFloat(line[3]),
+				};
 				break;
 			}
 			case "End": {
@@ -127,9 +135,23 @@ function parseKeyframes(data: string, nodes: Array<SkeletonNode>): Animation {
 	return frames;
 }
 
-export function parseData(data: string): {structure: SkeletonNode, animation: Animation} {
+function printNode(node: SkeletonNode, indent = "") {
+	let string = `${indent}${node.name}`;
+	string += ` `.repeat(26 - string.length);
+	let offset = node.offset ? `offset: ${node.offset.x}, ${node.offset.y}, ${node.offset.z}` : "";
+	string += `(${node.joints.length} attached joints. ${offset})\n`;
+	node.joints.forEach((node: SkeletonNode) => {
+		string += printNode(node, indent + "| ");
+	});
+	return string;
+}
+
+export function parseData(
+	data: string,
+): { structure: SkeletonNode; animation: Animation } {
 	const [structure, animation] = data.split("MOTION");
 	const struct = parseStructure(structure);
+	console.log(printNode(struct));
 	const anim = parseKeyframes(animation, flattenStructure(struct));
-	return {structure: struct, animation: anim};
+	return { structure: struct, animation: anim };
 }
