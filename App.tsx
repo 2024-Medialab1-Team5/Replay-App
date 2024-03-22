@@ -12,7 +12,7 @@ const App = () => {
     <SafeAreaProvider>
       <View style={styles.container}>
         <TopBar title="Lucas van der Vegt (2024-03-22)"/>
-        <Model />
+        {/* <Model /> */}
         <BottomBar />
         <BottomBar2 />
       </View>
