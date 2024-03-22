@@ -19,7 +19,7 @@ const BottomBar = () => {
         },
       ]}
       safeAreaInsets={{bottom}}>
-      <ProgressBar style={styles.progressBar} progress={0.5} color={MD3Colors.error50} />
+      <ProgressBar style={styles.progressBar} progress={0.5} color={MD3Colors.primary} />
       {/* <Appbar.Action icon="rewind" onPress={() => {}} />
       <Appbar.Action icon="pause" onPress={() => {}} />
       <Appbar.Action icon="fast-forward" onPress={() => {}} /> */}

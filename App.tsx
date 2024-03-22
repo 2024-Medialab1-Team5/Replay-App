@@ -5,12 +5,14 @@ import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-
 import TopBar from "./src/components/TopBar";
 import BottomBar from "./src/components/BottomBar";
 import BottomBar2 from "./src/components/BottomBar2";
+import Model from "./src/components/Model";
 
 const App = () => {
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
         <TopBar title="Lucas van der Vegt (2024-03-22)"/>
+        <Model />
         <BottomBar />
         <BottomBar2 />
       </View>
