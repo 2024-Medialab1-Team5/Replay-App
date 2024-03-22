@@ -1,58 +1,66 @@
 import * as React from "react";
 import { StyleSheet, View } from 'react-native';
-import { Title, Button, Appbar, useTheme } from 'react-native-paper';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Title, Button, Appbar, useTheme,  BottomNavigation, Text } from 'react-native-paper';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const BOTTOM_APPBAR_HEIGHT = 80;
+const MusicRoute = () => <Text>Music</Text>;
+
+const AlbumsRoute = () => <Text>Albums</Text>;
+
+const RecentsRoute = () => <Text>Recents</Text>;
+
+const NotificationsRoute = () => <Text>Notifications</Text>;
 
 const App = () => {
-    const { bottom } = useSafeAreaInsets();
-    const theme = useTheme();
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'music', focusedIcon: 'rewind',},
+    { key: 'albums', focusedIcon: 'pause', unfocusedIcon: 'play'},
+    { key: 'recents', focusedIcon: 'fast-forward' },
+    // { key: 'notifications', title: 'Notifications', focusedIcon: 'bell', unfocusedIcon: 'bell-outline' },
+  ]);
+
+  const renderScene = BottomNavigation.SceneMap({
+    music: MusicRoute,
+    albums: AlbumsRoute,
+    recents: RecentsRoute,
+    notifications: NotificationsRoute,
+  });
 
   return (
-    // <SafeAreaProvider>
-        <View style={styles.container}>
-            {/* <Title>Replay app UI</Title> */}
-            <Appbar.Header>
-                <Appbar.BackAction onPress={() => {}} />
-                <Appbar.Content title="Lucas van der Vegt (2024-03-11)" subtitle="2024-03-11, 13:45-15:23"/>
-                {/* <Appbar.Action icon="calendar" onPress={() => {}} /> */}
-                {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
-            </Appbar.Header>
-            <Appbar
-                style={[
-                  styles.bottom,
-                  {
-                    height: BOTTOM_APPBAR_HEIGHT + bottom,
-                    backgroundColor: theme.colors.elevation.level2,
-                  },
-                ]}
-                safeAreaInsets={{ bottom }}
-              >
-                <Appbar.Action icon="archive" onPress={() => {}} />
-                <Appbar.Action icon="email" onPress={() => {}} />
-                <Appbar.Action icon="label" onPress={() => {}} />
-                <Appbar.Action icon="delete" onPress={() => {}} />
-              </Appbar>
-        </View>
-    // </SafeAreaProvider>
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        <Appbar.Header>
+          <Appbar.BackAction onPress={() => { }} />
+          <Appbar.Content title="Lucas van der Vegt (2024-03-11)" subtitle="2024-03-11, 13:45-15:23" />
+          {/* <Appbar.Action icon="calendar" onPress={() => {}} /> */}
+          {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
+        </Appbar.Header>
+        <BottomNavigation
+          navigationState={{ index, routes }}
+          onIndexChange={setIndex}
+          renderScene={renderScene}
+        />
+
+      </View>
+    </SafeAreaProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
-    container: {
-        // flex: 1,
-        backgroundColor: '#fff',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-    },
-    bottom: {
-        backgroundColor: 'aquamarine',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
+  container: {
+    // flex: 1,
+    backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  bottom: {
+    backgroundColor: 'red',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
 });
 
 export default App;
