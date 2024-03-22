@@ -7,6 +7,7 @@ import { THREE } from 'expo-three';
 
 import {
   AmbientLight,
+  PointLight,
   PerspectiveCamera,
   Scene,
 } from "three";
@@ -67,8 +68,12 @@ export default function App() {
           await asset.downloadAsync();
           const scene = new Scene();
 
-          const ambientLight = new AmbientLight(0x101010);
+          const ambientLight = new AmbientLight(0x888888);
           scene.add(ambientLight);
+
+          const pointLight = new PointLight(0xffffff, 2, 1000, 1);
+          pointLight.position.set(0, 200, 200);
+          scene.add(pointLight);
 
           const loader = new GLTFLoader();
           loader.load(
