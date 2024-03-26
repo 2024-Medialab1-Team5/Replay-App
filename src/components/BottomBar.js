@@ -1,9 +1,9 @@
 import {StyleSheet} from 'react-native';
 import React from 'react';
-import {Appbar, FAB, useTheme} from 'react-native-paper';
+import {Appbar, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const BOTTOM_APPBAR_HEIGHT = 80;
+const BOTTOM_APPBAR_HEIGHT = 63;
 
 const BottomBar = () => {
   const {bottom} = useSafeAreaInsets();
@@ -19,10 +19,9 @@ const BottomBar = () => {
         },
       ]}
       safeAreaInsets={{bottom}}>
-      <Appbar.Action icon="rewind" onPress={() => {}} />
-      <Appbar.Action icon="pause" onPress={() => {}} />
-      <Appbar.Action icon="fast-forward" onPress={() => {}} />
-      {/* <FAB size="medium" icon="plus" onPress={() => {}} style={[styles.fab]} /> */}
+      <Appbar.Action icon="rewind" onPress={() => {}} size={40} />
+      <Appbar.Action icon="pause" onPress={() => {}} size={40} />
+      <Appbar.Action icon="fast-forward" onPress={() => {}} size={40} />
     </Appbar>
   );
 };
@@ -34,14 +33,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-//   fab: {
-//     position: 'absolute',
-//     right: 16,
-//     top: -20,
-//     borderRadius: 50,
-//     backgroundColor: '#F25165',
-//   },
 });
 
 export default BottomBar;

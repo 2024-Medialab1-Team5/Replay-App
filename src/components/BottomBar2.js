@@ -1,12 +1,12 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import React from 'react';
-import {Appbar, FAB, useTheme, ProgressBar, MD3Colors} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { Appbar, ProgressBar, Text, useTheme, MD3Colors } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const BOTTOM_APPBAR_HEIGHT = 80;
+const BOTTOM_APPBAR_HEIGHT = 64;
 
 const BottomBar = () => {
-  const {bottom} = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
   const theme = useTheme();
 
   return (
@@ -18,12 +18,19 @@ const BottomBar = () => {
           backgroundColor: theme.colors.elevation.level2,
         },
       ]}
-      safeAreaInsets={{bottom}}>
-      <ProgressBar style={styles.progressBar} progress={0.5} color={MD3Colors.primary} />
-      {/* <Appbar.Action icon="rewind" onPress={() => {}} />
-      <Appbar.Action icon="pause" onPress={() => {}} />
-      <Appbar.Action icon="fast-forward" onPress={() => {}} /> */}
-      {/* <FAB size="medium" icon="plus" onPress={() => {}} style={[styles.fab]} /> */}
+      safeAreaInsets={{ bottom }}
+    >
+      <View style={styles.contentContainer}>
+        <View style={styles.timeTextContainer}>
+          <Text style={styles.timeText}>0:00</Text>
+        </View>
+        <View style={styles.progressBarContainer}>
+          <ProgressBar style={styles.progressBar} progress={0.5} color={MD3Colors.primary} />
+        </View>
+        <View style={styles.timeTextContainer}>
+          <Text style={[styles.timeText, styles.totalTimeText]}>10:00</Text>
+        </View>
+      </View>
     </Appbar>
   );
 };
@@ -34,20 +41,35 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 80,
+    bottom: 64,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  contentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    width: '100%',
+  },
+  progressBarContainer: {
+    flex: 1,
+  },
   progressBar: {
-    
-  }
-//   fab: {
-//     position: 'absolute',
-//     right: 16,
-//     top: -20,
-//     borderRadius: 50,
-//     backgroundColor: '#F25165',
-//   },
+    width: '100%',
+  },
+  timeTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  timeText: {
+    paddingHorizontal: 10, // Adjust padding here
+    fontSize: 16,
+  },
+  totalTimeText: {
+    paddingHorizontal: 10, // Adjust padding here
+    marginLeft: 'auto',
+  },
 });
 
 export default BottomBar;
