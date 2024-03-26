@@ -13,7 +13,7 @@ import {
 import { Asset } from "expo-asset";
 
 let timeout: number;
-
+let mixer;
 let model: THREE.Group;
 let camera: PerspectiveCamera;
 
@@ -61,7 +61,7 @@ export default function App() {
           camera.position.y = 1.5;
 
           const asset = Asset.fromModule(
-            require("./assets/female.glb")
+            require("./assets/Char_Base_rigged.glb")
           );
 
           await asset.downloadAsync();
@@ -76,6 +76,11 @@ export default function App() {
             (gltf) => {
               model = gltf.scene;
               scene.add(model);
+              mixer = new THREE.AnimationMixer( model );
+              const clips = gltf.animations;
+              const clip = THREE.AnimationClip.findByName( clips, 'ArmatureAction' );
+              const action = mixer.clipAction( clip );
+              action.play();
             },
             (xhr) => {
               console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
@@ -84,9 +89,10 @@ export default function App() {
               console.error("An error happened", error);
             }
           );
-
+            const clock = new THREE.Clock();
           function update() {
-           
+            if (mixer)
+            mixer.update( clock.getDelta() );
           }
 
           const render = () => {
