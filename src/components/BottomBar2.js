@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BOTTOM_APPBAR_HEIGHT = 64;
 
-const BottomBar = () => {
+const BottomBar2 = ({ currentTime, totalTime, progress }) => {
   const { bottom } = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -22,13 +22,13 @@ const BottomBar = () => {
     >
       <View style={styles.contentContainer}>
         <View style={styles.timeTextContainer}>
-          <Text style={styles.timeText}>0:00</Text>
+          <Text style={styles.timeText}>{currentTime}</Text>
         </View>
         <View style={styles.progressBarContainer}>
-          <ProgressBar style={styles.progressBar} progress={0.5} color={MD3Colors.primary} />
+          <ProgressBar style={styles.progressBar} progress={progress} color={MD3Colors.primary} />
         </View>
         <View style={styles.timeTextContainer}>
-          <Text style={[styles.timeText, styles.totalTimeText]}>10:00</Text>
+          <Text style={[styles.timeText, styles.totalTimeText]}>{totalTime}</Text>
         </View>
       </View>
     </Appbar>
@@ -63,13 +63,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timeText: {
-    paddingHorizontal: 10, // Adjust padding here
+    paddingHorizontal: 10,
     fontSize: 16,
   },
   totalTimeText: {
-    paddingHorizontal: 10, // Adjust padding here
+    paddingHorizontal: 10,
     marginLeft: 'auto',
   },
 });
 
-export default BottomBar;
+export default BottomBar2;

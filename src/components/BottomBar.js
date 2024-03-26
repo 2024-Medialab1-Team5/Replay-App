@@ -3,7 +3,7 @@ import React from 'react';
 import {Appbar, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const BOTTOM_APPBAR_HEIGHT = 63;
+const BOTTOM_APPBAR_HEIGHT = 64;
 
 const BottomBar = () => {
   const {bottom} = useSafeAreaInsets();
