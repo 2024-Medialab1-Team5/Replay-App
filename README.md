@@ -22,4 +22,3 @@ All global state must be documented in the README.
 ### Global State
 
 *App.tsx*
-- `playing` if true, rotates the cube. (checked in `update()`)
