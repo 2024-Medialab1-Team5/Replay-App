@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BOTTOM_APPBAR_HEIGHT = 64;
 
-const BottomBar2 = ({ currentTime, totalTime, progress }) => {
+const PlayBar = ({ currentTime, totalTime, progress }) => {
   const { bottom } = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomBar2;
+export default PlayBar;

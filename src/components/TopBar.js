@@ -6,7 +6,6 @@ const TopBar = props => {
     <Appbar.Header style={{backgroundColor: '#FFF'}}>
       <Appbar.BackAction onPress={() => {}} />
       <Appbar.Content title={props.title} />
-      {/* <Appbar.Action icon="menu" onPress={() => {}} /> */}
     </Appbar.Header>
   );
 };
