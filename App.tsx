@@ -19,6 +19,7 @@ let model: THREE.Group;
 let camera: PerspectiveCamera;
 
 export default function App() {
+  
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -27,17 +28,24 @@ export default function App() {
         const { moveX, moveY, dx, dy } = gestureState;
         const deltaX = dx / 100; 
         const deltaY = dy / 100;
-
-      
+        
         if (camera && model) {
-          camera.position.x = model.position.x + Math.sin(deltaX) * 5;
-          camera.position.z = model.position.z + Math.cos(deltaX) * 5;
-          camera.position.y = model.position.y + deltaY * 2; 
+          const matrixX = new THREE.Matrix4();
+          matrixX.makeRotationX(-deltaY * 0.04)
+
+          const matrixY = new THREE.Matrix4();
+          matrixY.makeRotationY(-deltaX * 0.08)
+
+          camera.position.applyMatrix4(matrixY);
+          camera.position.applyMatrix4(matrixX);
+          
           camera.lookAt(model.position);
+        
         }
       },
     })
   ).current;
+
 
   useEffect(() => {
     return () => clearTimeout(timeout);
@@ -59,7 +67,7 @@ export default function App() {
 
           camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
           camera.position.z = 5;
-          camera.position.y = 1.5;
+          camera.position.y = 0;
 
           const asset = Asset.fromModule(
             require("./assets/female.glb")
@@ -79,8 +87,10 @@ export default function App() {
           loader.load(
             asset.uri || "",
             (gltf) => {
+            
               model = gltf.scene;
               scene.add(model);
+            
             },
             (xhr) => {
               console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
