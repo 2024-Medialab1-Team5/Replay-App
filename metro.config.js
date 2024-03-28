@@ -12,7 +12,7 @@ config.transformer = {
 
 config.resolver = {
     ...resolver,
-    assetExts: ['db', 'mp3', 'ttf', 'obj', 'png', 'jpg', 'gltf', 'glb', 'fbx'],
+    assetExts: ['db', 'mp3', 'ttf', 'obj', 'png', 'jpg', 'gltf', 'glb', 'fbx', 'bvh'],
   };
 
 module.exports = config;

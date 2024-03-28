@@ -3,6 +3,7 @@ import { StyleSheet, View, PanResponder } from 'react-native';
 import { Renderer } from "expo-three";
 import { useEffect, useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { BVHLoader } from "three/examples/jsm/loaders/BVHLoader";
 import { THREE } from 'expo-three';
 
 import {
@@ -14,6 +15,7 @@ import { Asset } from "expo-asset";
 
 let timeout: number;
 let mixer;
+let mesh;
 let model: THREE.Group;
 let camera: PerspectiveCamera;
 
@@ -61,8 +63,15 @@ export default function App() {
           camera.position.y = 1.5;
 
           const asset = Asset.fromModule(
-            require("./assets/Char_Base_rigged.glb")
+            require("./assets/Char_Base_rigged_v2.glb",)
+            // require("./assets/pirouette.bvh")
           );
+
+          const asset2 = Asset.fromModule(
+            // require("./assets/Char_Base_rigged.glb",)
+            require("./assets/dataset-2_raise-up-both-hands_active_001.bvh")
+          );
+
 
           await asset.downloadAsync();
           const scene = new Scene();
@@ -77,11 +86,12 @@ export default function App() {
             (gltf) => {
               model = gltf.scene;
               scene.add(model);
-              mixer = new THREE.AnimationMixer(model);
-              const clips = gltf.animations;
-              const clip = THREE.AnimationClip.findByName(clips, "ArmatureAction");
-              const action = mixer.clipAction(clip);
-              action.play();
+              mesh = new THREE.SkinnedMesh( model );
+              // mixer = new THREE.AnimationMixer(model);
+              // const clips = gltf.animations;
+              // const clip = THREE.AnimationClip.findByName(clips, "ArmatureAction");
+              // const action = mixer.clipAction(clip);
+              // action.play();
     //           clips.forEach(function(clip) {
     
     //               action = mixer.clipAction(model.animations[0]);
@@ -96,10 +106,38 @@ export default function App() {
             }
             
           );
+
+          const loader2 = new BVHLoader();
+          loader2.load(  asset2.uri || "",
+                 function (bvh) {
+
+            const skeletonHelper = new THREE.SkeletonHelper( bvh.skeleton.bones[ 0 ] );
+    // 
+            scene.add( bvh.skeleton.bones[ 0 ] );
+            scene.add( skeletonHelper );
+
+            
+            const skeleton = new THREE.Skeleton( bvh.skeleton.bones[ 0 ] );
+
+            // see example from THREE.Skeleton
+            const rootBone = skeleton.bones[ 0 ];
+            mesh.add( rootBone );
+
+            // bind the skeleton to the mesh
+            mesh.bind( skeleton );
+    
+            // play animation
+            mixer = new THREE.AnimationMixer( bvh.skeleton.bones[ 0 ] );
+            mixer.clipAction( bvh.clip ).play();
+    
+          } );
+
+
           const clock = new THREE.Clock();
           
           function update() {
-           mixer.update( clock.getDelta );
+            if (mixer)
+            mixer.update( clock.getDelta() );
           }
 
           // function update() {
