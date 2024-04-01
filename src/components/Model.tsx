@@ -72,15 +72,8 @@ export default function Model() {
           camera.position.y = 1.5;
 
           const asset = Asset.fromModule(
-            require("../../assets/Char_Base_rigged_v2.glb",)
-            // require("./assets/pirouette.bvh")
+            require("../../assets/Char_Base_riggedAnimation.glb",)
           );
-
-          const asset2 = Asset.fromModule(
-            // require("./assets/Char_Base_rigged.glb",)
-            require("../../assets/dataset-2_raise-up-both-hands_active_001.bvh")
-          );
-
 
           await asset.downloadAsync();
           const scene = new Scene();
@@ -96,6 +89,11 @@ export default function Model() {
               model = gltf.scene;
               scene.add(model);
               mesh = new THREE.SkinnedMesh( model );
+              mixer = new THREE.AnimationMixer(model);
+              const clips = gltf.animations;
+              const clip = THREE.AnimationClip.findByName(clips, "ArmatureAction.001");
+              const action = mixer.clipAction(clip);
+              action.play();
             },
             (xhr) => {
               console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
@@ -105,32 +103,6 @@ export default function Model() {
             }
             
           );
-
-          const loader2 = new BVHLoader();
-          loader2.load(  asset2.uri || "",
-                 function (bvh) {
-
-            const skeletonHelper = new THREE.SkeletonHelper( bvh.skeleton.bones[ 0 ] );
-    // 
-            scene.add( bvh.skeleton.bones[ 0 ] );
-            scene.add( skeletonHelper );
-
-            
-            const skeleton = new THREE.Skeleton( bvh.skeleton.bones[ 0 ] );
-
-            // see example from THREE.Skeleton
-            const rootBone = skeleton.bones[ 0 ];
-            mesh.add( rootBone );
-
-            // bind the skeleton to the mesh
-            mesh.bind( skeleton );
-    
-            // play animation
-            mixer = new THREE.AnimationMixer( bvh.skeleton.bones[ 0 ] );
-            mixer.clipAction( bvh.clip ).play();
-    
-          } );
-
 
           const clock = new THREE.Clock();
           
@@ -149,5 +121,5 @@ export default function Model() {
         }}
       />
     </View>
-  );
+ );
 }
