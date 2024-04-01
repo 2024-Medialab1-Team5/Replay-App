@@ -12,6 +12,8 @@ import {
   PointLight,
   PerspectiveCamera,
   Scene,
+  AnimationAction,
+  AnimationClip
 } from "three";
 import { Asset } from "expo-asset";
 
@@ -20,8 +22,10 @@ let mixer;
 let mesh;
 let model: THREE.Group;
 let camera: PerspectiveCamera;
+let clip: AnimationClip;
+let action: AnimationAction;
 
-export default function Model() {
+export default function Model({onClipLoaded, onTimeUpdated}) {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -67,8 +71,8 @@ export default function Model() {
           const renderer = new Renderer({ gl });
           renderer.setSize(width, height);
 
-          camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
-          camera.position.z = 5;
+          camera = new PerspectiveCamera(50, width / height, 0.1, 1000);
+          camera.position.z = 4;
           camera.position.y = 1.5;
 
           const asset = Asset.fromModule(
@@ -80,11 +84,11 @@ export default function Model() {
 
           const ambientLight = new AmbientLight(0x101010);
           scene.add(ambientLight);
-          
+
           const pointLight = new PointLight(0xffffff, 2, 1000, 1);
           pointLight.position.set(0, 200, 200);
           scene.add(pointLight);
-          
+
           const backLight = new PointLight(0xbbbbbb, 2, 1000, 1);
           backLight.position.set(100, -200, -200);
           scene.add(backLight);
@@ -96,12 +100,14 @@ export default function Model() {
             (gltf) => {
               model = gltf.scene;
               scene.add(model);
-              // mesh = new THREE.SkinnedMesh( model );
+              camera.lookAt(model.position);
               mixer = new THREE.AnimationMixer(model);
               const clips = gltf.animations;
-              const clip = THREE.AnimationClip.findByName(clips, "ArmatureAction.001");
-              const action = mixer.clipAction(clip);
+              clip = THREE.AnimationClip.findByName(clips, "ArmatureAction.001");
+              console.log(clip)
+              action = mixer.clipAction(clip);
               action.play();
+              onClipLoaded(clip.duration);
             },
             (xhr) => {
               console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);

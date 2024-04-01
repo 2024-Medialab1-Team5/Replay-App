@@ -5,7 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const BOTTOM_APPBAR_HEIGHT = 64;
 
-const BottomBar = () => {
+const BottomBar = ({onPause}) => {
   const {bottom} = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -20,7 +20,7 @@ const BottomBar = () => {
       ]}
       safeAreaInsets={{bottom}}>
       <Appbar.Action icon="rewind" onPress={() => {}} size={40} />
-      <Appbar.Action icon="pause" onPress={() => {}} size={40} />
+      <Appbar.Action icon="pause" onPress={() => {onPause()}} size={40} />
       <Appbar.Action icon="fast-forward" onPress={() => {}} size={40} />
     </Appbar>
   );
