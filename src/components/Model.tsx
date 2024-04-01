@@ -26,11 +26,11 @@ export default function Model() {
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (evt, gestureState) => {
-       
+
         const { moveX, moveY, dx, dy } = gestureState;
-        const deltaX = dx / 100; 
+        const deltaX = dx / 100;
         const deltaY = dy / 100;
-        
+
         if (camera && model) {
           const matrixX = new THREE.Matrix4();
           matrixX.makeRotationX(-deltaY * 0.04)
@@ -40,9 +40,9 @@ export default function Model() {
 
           camera.position.applyMatrix4(matrixY);
           camera.position.applyMatrix4(matrixX);
-          
+
           camera.lookAt(model.position);
-        
+
         }
       },
     })
@@ -80,15 +80,23 @@ export default function Model() {
 
           const ambientLight = new AmbientLight(0x101010);
           scene.add(ambientLight);
+          
+          const pointLight = new PointLight(0xffffff, 2, 1000, 1);
+          pointLight.position.set(0, 200, 200);
+          scene.add(pointLight);
+          
+          const backLight = new PointLight(0xbbbbbb, 2, 1000, 1);
+          backLight.position.set(100, -200, -200);
+          scene.add(backLight);
 
           const loader = new GLTFLoader();
-          
+
           loader.load(
             asset.uri || "",
             (gltf) => {
               model = gltf.scene;
               scene.add(model);
-              mesh = new THREE.SkinnedMesh( model );
+              // mesh = new THREE.SkinnedMesh( model );
               mixer = new THREE.AnimationMixer(model);
               const clips = gltf.animations;
               const clip = THREE.AnimationClip.findByName(clips, "ArmatureAction.001");
@@ -101,14 +109,14 @@ export default function Model() {
             (error) => {
               console.error("An error happened", error);
             }
-            
+
           );
 
           const clock = new THREE.Clock();
-          
+
           function update() {
             if (mixer)
-            mixer.update( clock.getDelta() );
+              mixer.update(clock.getDelta());
           }
 
           const render = () => {
@@ -121,5 +129,5 @@ export default function Model() {
         }}
       />
     </View>
- );
+  );
 }

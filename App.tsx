@@ -6,7 +6,6 @@ import TopBar from "./src/components/TopBar";
 import BottomBar from "./src/components/BottomBar";
 import PlayBar from "./src/components/PlayBar";
 import Model from "./src/components/Model";
-
 const App = () => {
   return (
     <SafeAreaProvider>
