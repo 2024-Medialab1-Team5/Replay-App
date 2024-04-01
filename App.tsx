@@ -63,14 +63,14 @@ export default function App() {
           camera.position.y = 1.5;
 
           const asset = Asset.fromModule(
-            require("./assets/Char_Base_rigged_v2.glb",)
+            require("./assets/Char_Base_riggedAnimation.glb",)
             // require("./assets/pirouette.bvh")
           );
 
-          const asset2 = Asset.fromModule(
-            // require("./assets/Char_Base_rigged.glb",)
-            require("./assets/dataset-2_raise-up-both-hands_active_001.bvh")
-          );
+          // const asset2 = Asset.fromModule(
+          //   // require("./assets/Char_Base_rigged.glb",)
+          //   require("./assets/dataset-2_raise-up-both-hands_active_001.bvh")
+          // );
 
 
           await asset.downloadAsync();
@@ -87,11 +87,11 @@ export default function App() {
               model = gltf.scene;
               scene.add(model);
               mesh = new THREE.SkinnedMesh( model );
-              // mixer = new THREE.AnimationMixer(model);
-              // const clips = gltf.animations;
-              // const clip = THREE.AnimationClip.findByName(clips, "ArmatureAction");
-              // const action = mixer.clipAction(clip);
-              // action.play();
+              mixer = new THREE.AnimationMixer(model);
+              const clips = gltf.animations;
+              const clip = THREE.AnimationClip.findByName(clips, "ArmatureAction.001");
+              const action = mixer.clipAction(clip);
+              action.play();
     //           clips.forEach(function(clip) {
     
     //               action = mixer.clipAction(model.animations[0]);
@@ -107,30 +107,30 @@ export default function App() {
             
           );
 
-          const loader2 = new BVHLoader();
-          loader2.load(  asset2.uri || "",
-                 function (bvh) {
+    //       const loader2 = new BVHLoader();
+    //       loader2.load(  asset2.uri || "",
+    //              function (bvh) {
 
-            const skeletonHelper = new THREE.SkeletonHelper( bvh.skeleton.bones[ 0 ] );
-    // 
-            scene.add( bvh.skeleton.bones[ 0 ] );
-            scene.add( skeletonHelper );
+    //         const skeletonHelper = new THREE.SkeletonHelper( bvh.skeleton.bones[ 0 ] );
+    // // 
+    //         scene.add( bvh.skeleton.bones[ 0 ] );
+    //         scene.add( skeletonHelper );
 
             
-            const skeleton = new THREE.Skeleton( bvh.skeleton.bones[ 0 ] );
+    //         const skeleton = new THREE.Skeleton( bvh.skeleton.bones[ 0 ] );
 
-            // see example from THREE.Skeleton
-            const rootBone = skeleton.bones[ 0 ];
-            mesh.add( rootBone );
+    //         // see example from THREE.Skeleton
+    //         const rootBone = skeleton.bones[ 0 ];
+    //         mesh.add( rootBone );
 
-            // bind the skeleton to the mesh
-            mesh.bind( skeleton );
+    //         // bind the skeleton to the mesh
+    //         mesh.bind( skeleton );
     
-            // play animation
-            mixer = new THREE.AnimationMixer( bvh.skeleton.bones[ 0 ] );
-            mixer.clipAction( bvh.clip ).play();
+    //         // play animation
+    //         mixer = new THREE.AnimationMixer( bvh.skeleton.bones[ 0 ] );
+    //         mixer.clipAction( bvh.clip ).play();
     
-          } );
+    //       } );
 
 
           const clock = new THREE.Clock();
