@@ -3,7 +3,7 @@ import { StyleSheet, View, PanResponder } from 'react-native';
 import { Renderer } from "expo-three";
 import { useEffect, useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { BVHLoader } from "three/examples/jsm/loaders/BVHLoader";
+// import { BVHLoader } from "three/examples/jsm/loaders/BVHLoader";
 import { THREE } from 'expo-three';
 
 import {
@@ -15,7 +15,7 @@ import { Asset } from "expo-asset";
 
 let timeout: number;
 let mixer;
-let mesh;
+// let mesh;
 let model: THREE.Group;
 let camera: PerspectiveCamera;
 
@@ -86,7 +86,7 @@ export default function App() {
             (gltf) => {
               model = gltf.scene;
               scene.add(model);
-              mesh = new THREE.SkinnedMesh( model );
+              // mesh = new THREE.SkinnedMesh( model );
               mixer = new THREE.AnimationMixer(model);
               const clips = gltf.animations;
               const clip = THREE.AnimationClip.findByName(clips, "ArmatureAction.001");
