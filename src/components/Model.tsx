@@ -25,7 +25,7 @@ let camera: PerspectiveCamera;
 let clip: AnimationClip;
 let action: AnimationAction;
 
-export default function Model({onClipLoaded, onTimeUpdated}) {
+export default function Model({ onClipLoaded, onTimeUpdated, paused }) {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -57,9 +57,7 @@ export default function Model({onClipLoaded, onTimeUpdated}) {
     return () => clearTimeout(timeout);
   }, []);
 
-  const onContextCreate = async (gl) => {
-    const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
-  };
+  if (action) action.paused = paused;
 
   return (
     <View style={{ flex: 1 }} {...panResponder.panHandlers}>
@@ -104,9 +102,13 @@ export default function Model({onClipLoaded, onTimeUpdated}) {
               mixer = new THREE.AnimationMixer(model);
               const clips = gltf.animations;
               clip = THREE.AnimationClip.findByName(clips, "ArmatureAction.001");
-              console.log(clip)
               action = mixer.clipAction(clip);
-              action.play();
+              console.log(paused)
+              if (paused) {
+                action.halt()
+              } else {
+                action.play();
+              }
               onClipLoaded(clip.duration);
             },
             (xhr) => {
@@ -121,6 +123,9 @@ export default function Model({onClipLoaded, onTimeUpdated}) {
           const clock = new THREE.Clock();
 
           function update() {
+            if (action) {
+              onTimeUpdated(action.time);
+            }
             if (mixer)
               mixer.update(clock.getDelta());
           }
