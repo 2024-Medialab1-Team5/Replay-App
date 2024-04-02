@@ -25,7 +25,7 @@ let camera: PerspectiveCamera;
 let clip: AnimationClip;
 let action: AnimationAction;
 
-export default function Model({ onClipLoaded, onTimeUpdated, paused }) {
+export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, setOffset }) {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -57,8 +57,14 @@ export default function Model({ onClipLoaded, onTimeUpdated, paused }) {
     return () => clearTimeout(timeout);
   }, []);
 
-  if (action) action.paused = paused;
-
+  if (action) {
+    action.paused = paused;
+    if (offset != 0) {
+      action.time += offset;
+      setOffset(0);
+    }
+  }
+  
   return (
     <View style={{ flex: 1 }} {...panResponder.panHandlers}>
       <GLView

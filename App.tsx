@@ -13,13 +13,15 @@ const App = () => {
   const [totalTime, setTotalTime] = React.useState(0);
   const [currentTime, setCurrentTime] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
+  const [offset, setOffset] = React.useState(0);
+
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
         <TopBar title="Lucas van der Vegt (2024-03-22)" />
-        <Model onClipLoaded={(clipDuration) => { setTotalTime(clipDuration); }} onTimeUpdated={(newTime) => { setCurrentTime(newTime); }} paused={paused} />
+        <Model onClipLoaded={(clipDuration) => { setTotalTime(clipDuration); }} onTimeUpdated={(newTime) => { setCurrentTime(newTime); }} paused={paused} offset={offset} setOffset={setOffset} />
         <PlayBar currentTime={timeToString(currentTime)} totalTime={timeToString(totalTime)} progress={currentTime / (totalTime + 0.0001)} />
-        <BottomBar onPause={() => { setPaused(!paused) }} />
+        <BottomBar onPause={() => { setPaused(!paused) }} onForward={() => { setOffset(1) }} onBackward={() => { setOffset(-1) }} paused={paused} />
       </View>
     </SafeAreaProvider>
   );
