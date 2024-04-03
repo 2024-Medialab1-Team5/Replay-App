@@ -7,7 +7,7 @@ import BottomBar from "./src/components/BottomBar";
 import PlayBar from "./src/components/PlayBar";
 import Model from "./src/components/Model";
 
-const timeToString = (time: number) => time.toFixed(0);
+const timeToString = (time: number) => time.toFixed(2);
 
 const App = () => {
   const [totalTime, setTotalTime] = React.useState(0);

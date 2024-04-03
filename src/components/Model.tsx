@@ -24,6 +24,7 @@ let model: THREE.Group;
 let camera: PerspectiveCamera;
 let clip: AnimationClip;
 let action: AnimationAction;
+const focusPosition = new THREE.Vector3(0, 0.7, 0);
 
 export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, setOffset }) {
   const panResponder = useRef(
@@ -45,7 +46,7 @@ export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, set
           camera.position.applyMatrix4(matrixY);
           camera.position.applyMatrix4(matrixX);
 
-          camera.lookAt(model.position);
+          camera.lookAt(focusPosition);
 
         }
       },
@@ -76,11 +77,11 @@ export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, set
           renderer.setSize(width, height);
 
           camera = new PerspectiveCamera(50, width / height, 0.1, 1000);
-          camera.position.z = 4;
+          camera.position.z = 3.5;
           camera.position.y = 1.5;
 
           const asset = Asset.fromModule(
-            require("../../assets/Char_Base_riggedAnimation.glb",)
+            require("../../assets/Char_Base_animation_v2.glb",)
           );
 
           await asset.downloadAsync();
@@ -104,10 +105,10 @@ export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, set
             (gltf) => {
               model = gltf.scene;
               scene.add(model);
-              camera.lookAt(model.position);
+              camera.lookAt(focusPosition);
               mixer = new THREE.AnimationMixer(model);
               const clips = gltf.animations;
-              clip = THREE.AnimationClip.findByName(clips, "ArmatureAction.001");
+              clip = THREE.AnimationClip.findByName(clips, "ArmatureAction");
               action = mixer.clipAction(clip);
               console.log(paused)
               if (paused) {
