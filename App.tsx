@@ -1,27 +1,24 @@
 import * as React from "react";
 import { StyleSheet, View } from 'react-native';
-import { Title, Button, Appbar, FAB, useTheme, BottomNavigation, Text } from 'react-native-paper';
-import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import TopBar from "./src/components/TopBar";
-import BottomBar from "./src/components/BottomBar";
-import PlayBar from "./src/components/PlayBar";
-import Model from "./src/components/Model";
-
-const timeToString = (time: number) => time.toFixed(2);
+import PlayControls from "./src/components/PlayControls";
+import VideoProgress from "./src/components/VideoProgress";
+import ModelViewer from "./src/components/ModelViewer";
 
 const App = () => {
   const [totalTime, setTotalTime] = React.useState(0);
   const [currentTime, setCurrentTime] = React.useState(0);
-  const [paused, setPaused] = React.useState(false);
+  const [paused, setPaused] = React.useState(true);
   const [offset, setOffset] = React.useState(0);
 
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
         <TopBar title="Lucas van der Vegt (2024-03-22)" />
-        <Model onClipLoaded={(clipDuration) => { setTotalTime(clipDuration); }} onTimeUpdated={(newTime) => { setCurrentTime(newTime); }} paused={paused} offset={offset} setOffset={setOffset} />
-        <PlayBar currentTime={timeToString(currentTime)} totalTime={timeToString(totalTime)} progress={currentTime / (totalTime + 0.0001)} />
-        <BottomBar onPause={() => { setPaused(!paused) }} onForward={() => { setOffset(1) }} onBackward={() => { setOffset(-1) }} paused={paused} />
+        <ModelViewer onClipLoaded={(clipDuration) => { setTotalTime(clipDuration); }} onTimeUpdated={(newTime) => { setCurrentTime(newTime); }} paused={paused} offset={offset} setOffset={setOffset} />
+        <VideoProgress currentTime={currentTime.toFixed(2)} totalTime={totalTime.toFixed(2)} progress={currentTime / (totalTime + 0.0001)} />
+        <PlayControls onPause={() => { setPaused(!paused) }} onForward={() => { setOffset(1) }} onBackward={() => { setOffset(-1) }} paused={paused} />
       </View>
     </SafeAreaProvider>
   );
@@ -29,10 +26,7 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
     height: '100%',
   },
 });

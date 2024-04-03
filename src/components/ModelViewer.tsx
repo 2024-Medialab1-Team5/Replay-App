@@ -1,10 +1,9 @@
 import * as React from "react"
 import { ExpoWebGLRenderingContext, GLView } from "expo-gl";
-import { StyleSheet, View, PanResponder } from 'react-native';
+import { View, PanResponder } from 'react-native';
 import { Renderer } from "expo-three";
 import { useEffect, useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { BVHLoader } from "three/examples/jsm/loaders/BVHLoader";
 import { THREE } from 'expo-three';
 
 import {
@@ -13,35 +12,38 @@ import {
   PerspectiveCamera,
   Scene,
   AnimationAction,
-  AnimationClip
+  AnimationClip,
+  AnimationMixer
 } from "three";
 import { Asset } from "expo-asset";
 
 let timeout: number;
-let mixer;
-let mesh;
+let mixer: AnimationMixer;
 let model: THREE.Group;
 let camera: PerspectiveCamera;
 let clip: AnimationClip;
 let action: AnimationAction;
+let lastDelta = { x: 0, y: 0 };
 const focusPosition = new THREE.Vector3(0, 0.7, 0);
 
-export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, setOffset }) {
+export default function ModelViewer({ onClipLoaded, onTimeUpdated, paused, offset, setOffset }) {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (evt, gestureState) => {
+      onPanResponderMove: (_, gestureState) => {
 
-        const { moveX, moveY, dx, dy } = gestureState;
-        const deltaX = dx / 100;
-        const deltaY = dy / 100;
+        const { dx, dy } = gestureState;
+        let { x, y } = lastDelta;
+        lastDelta = { x: dx, y: dy };
+        const deltaX = (x - dx) / 100;
+        const deltaY = (y - dy) / 100;
 
         if (camera && model) {
           const matrixX = new THREE.Matrix4();
-          matrixX.makeRotationX(-deltaY * 0.04)
+          matrixX.makeRotationX(deltaY * 0.6)
 
           const matrixY = new THREE.Matrix4();
-          matrixY.makeRotationY(-deltaX * 0.08)
+          matrixY.makeRotationY(deltaX * 1.8)
 
           camera.position.applyMatrix4(matrixY);
           camera.position.applyMatrix4(matrixX);
@@ -50,6 +52,9 @@ export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, set
 
         }
       },
+      onPanResponderRelease: (_, __) => {
+        lastDelta = { x: 0, y: 0 };
+      }
     })
   ).current;
 
@@ -65,7 +70,7 @@ export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, set
       setOffset(0);
     }
   }
-  
+
   return (
     <View style={{ flex: 1 }} {...panResponder.panHandlers}>
       <GLView
@@ -87,14 +92,14 @@ export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, set
           await asset.downloadAsync();
           const scene = new Scene();
 
-          const ambientLight = new AmbientLight(0x101010);
+          const ambientLight = new AmbientLight(0xaaaaaa);
           scene.add(ambientLight);
 
-          const pointLight = new PointLight(0xffffff, 2, 1000, 1);
+          const pointLight = new PointLight(0x999999, 2, 1000, 1);
           pointLight.position.set(0, 200, 200);
           scene.add(pointLight);
 
-          const backLight = new PointLight(0xbbbbbb, 2, 1000, 1);
+          const backLight = new PointLight(0x666666, 2, 1000, 1);
           backLight.position.set(100, -200, -200);
           scene.add(backLight);
 
@@ -104,18 +109,15 @@ export default function Model({ onClipLoaded, onTimeUpdated, paused, offset, set
             asset.uri || "",
             (gltf) => {
               model = gltf.scene;
+              model.children[0].children[3].material = new THREE.MeshLambertMaterial({color: 0xaaaaaa});
               scene.add(model);
               camera.lookAt(focusPosition);
               mixer = new THREE.AnimationMixer(model);
               const clips = gltf.animations;
               clip = THREE.AnimationClip.findByName(clips, "ArmatureAction");
               action = mixer.clipAction(clip);
-              console.log(paused)
-              if (paused) {
-                action.halt()
-              } else {
-                action.play();
-              }
+              console.log("paused")
+              action.play();
               onClipLoaded(clip.duration);
             },
             (xhr) => {

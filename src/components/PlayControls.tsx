@@ -3,9 +3,7 @@ import React from 'react';
 import {Appbar, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const BOTTOM_APPBAR_HEIGHT = 64;
-
-const BottomBar = ({onPause, onForward, onBackward, paused}) => {
+const PlayControls = ({onPause, onForward, onBackward, paused}) => {
   const {bottom} = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -14,7 +12,7 @@ const BottomBar = ({onPause, onForward, onBackward, paused}) => {
       style={[
         styles.bottom,
         {
-          height: BOTTOM_APPBAR_HEIGHT + bottom,
+          height: 64 + bottom,
           backgroundColor: theme.colors.elevation.level2,
         },
       ]}
@@ -40,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomBar;
+export default PlayControls;

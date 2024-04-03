@@ -1,11 +1,11 @@
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { Appbar, ProgressBar, Text, useTheme, MD3Colors } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BOTTOM_APPBAR_HEIGHT = 64;
 
-const PlayBar = ({ currentTime, totalTime, progress }) => {
+const VideoProgress = ({ currentTime, totalTime, progress }) => {
   const { bottom } = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -25,7 +25,7 @@ const PlayBar = ({ currentTime, totalTime, progress }) => {
           <Text style={styles.timeText}>{currentTime}</Text>
         </View>
         <View style={styles.progressBarContainer}>
-          <ProgressBar style={styles.progressBar} progress={progress} color={MD3Colors.primary} />
+          <VideoProgress style={styles.progressBar} progress={progress} color={MD3Colors.primary0} />
         </View>
         <View style={styles.timeTextContainer}>
           <Text style={[styles.timeText, styles.totalTimeText]}>{totalTime}</Text>
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PlayBar;
+export default VideoProgress;

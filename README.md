@@ -14,11 +14,3 @@
 ## Code Conventions
 
 Formatting using `typescript-language-server` (Built-into VSCode.)
-
-All global state must be documented in the README.
-
-## Code Documentation
-
-### Global State
-
-*App.tsx*
